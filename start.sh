@@ -1,17 +1,16 @@
 #!/bin/sh
 set -e
 
-# try to install ntpdate (works on debian-based images)
-if command -v apt-get >/dev/null 2>&1; then
-  apt-get update -y || true
-  apt-get install -y ntpdate || true
+echo "⏳ Syncing system time..."
+
+# Install ntpdate only if available (Debian base image)
+if command -v ntpdate >/dev/null 2>&1; then
+    ntpdate -u pool.ntp.org || ntpdate -u time.google.com || true
+else
+    echo "⚠️ ntpdate not found (will continue without manual sync)"
 fi
 
-# Try syncing time with public NTP servers (best-effort; continue on failure)
-ntpdate -u pool.ntp.org || ntpdate -u time.google.com || true
-
-# small sleep to let system apply time
 sleep 1
 
-# Start the bot
+echo "🚀 Starting TeraBox Downloader Bot..."
 python main.py
