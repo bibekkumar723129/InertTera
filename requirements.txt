@@ -1,0 +1,6 @@
+pyrogram==2.0.59
+tgcrypto
+aiohttp
+requests
+python-dotenv
+tqdm
