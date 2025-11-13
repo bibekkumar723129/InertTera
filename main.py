@@ -1,24 +1,21 @@
 import os
 from pyrogram import Client
-from config import BOT_TOKEN
 from helpers.logger import logger
 
-# Load API ID & API HASH manually
-API_ID = int(os.getenv("API_ID", 22107616))
-API_HASH = os.getenv("API_HASH", "6629084d27f421f2375a57f233e471e2")
-
-if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN is missing!")
+API_ID = int(os.getenv("API_ID", 2040))
+API_HASH = os.getenv("API_HASH", "b18441a1ff607e10a989891a4eaaf88f")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 app = Client(
     "terabox_bot",
     bot_token=BOT_TOKEN,
     api_id=API_ID,
-    api_hash=API_HASH
+    api_hash=API_HASH,
+    workdir=".",
+    sleep_threshold=10,      # ⬅ IMPORTANT
+    no_updates=False,
+    parse_mode="html"
 )
-
-# Import plugins
-from plugins import start, terabox, progress  # noqa
 
 if __name__ == "__main__":
     logger.info("Starting TeraBox Downloader Bot...")
