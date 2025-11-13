@@ -1,16 +1,18 @@
 #!/bin/sh
 set -e
 
-echo "⏳ Syncing system time..."
+echo "⏳ Syncing time..."
 
-# Install ntpdate only if available (Debian base image)
+# Use ntpsec-ntpdate (new name)
 if command -v ntpdate >/dev/null 2>&1; then
-    ntpdate -u pool.ntp.org || ntpdate -u time.google.com || true
+    ntpdate -u pool.ntp.org || true
+elif command -v ntpsec-ntpdate >/dev/null 2>&1; then
+    ntpsec-ntpdate -u pool.ntp.org || true
 else
-    echo "⚠️ ntpdate not found (will continue without manual sync)"
+    echo "⚠ No ntpdate available (continuing anyway)"
 fi
 
 sleep 1
 
-echo "🚀 Starting TeraBox Downloader Bot..."
+echo "🚀 Starting bot..."
 python main.py
